@@ -1,0 +1,23 @@
+{
+  "name": "validate-tip",
+  "version": "1.0.0",
+  "description": "validate fields and give error tips",
+  "main": "validate.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "validate",
+    "validate-tip",
+    "validate-fileds",
+    "validate-data"
+  ],
+  "author": "laomu1988",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0"
+  }
+}
