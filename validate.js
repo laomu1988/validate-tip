@@ -129,7 +129,7 @@ function validate(obj, schema, total) {
     errors = _.compact(errors);
     return errors.length > 0 ? errors : false;
 }
-function create(schemas, rules, tips) {
+function create(schemas) {
     "use strict";
     if (!_.isPlainObject(schemas)) {
         throw new Error('schema need plain object.');
