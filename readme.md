@@ -44,12 +44,13 @@ schema.rules.enum = function (val, param) {
 schema.tips.enum = '{name}不是预定值';
 
 var test = schema({
-    'role': {
-        'name': '用户角色',
-        'enum': ['admin', 'customer']
+    role: {
+        name: '用户角色',
+        require: true,
+        enum: ['admin', 'customer']
     }
 });
-var err = test.validate({role:''});
+var err = test.validate({role:'test'});
 console.log(err);
 // 将输出: ['用户角色不是预定值']
 ```
@@ -57,9 +58,11 @@ console.log(err);
 ## Todo:
 - 校验规则分级,全局和局部
 - 校验规则和提示说明
+- 多层校验
 
 ## history:
 * 2016.12.08
     - 自定义校验规则说明
+    - 当没有内容并且不包含require时不校验
 * 2016.12.06
     - 初步定义校验规则

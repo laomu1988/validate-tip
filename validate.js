@@ -7,6 +7,7 @@
 "use strict";
 var _ = require('lodash');
 
+
 /**
  * 校验未通过时的错误提示
  */
@@ -40,10 +41,10 @@ var rules = {
         return parseFloat(val) <= parseFloat(param);
     },
     required: function (val, param) {
-        return !param || (param && val);
+        return !param || (param && hasValue(val));
     },
     require: function (val, param) {
-        return !param || (param && val);
+        return !param || (param && hasValue(val));
     },
     max_len: function (val, param) {
         return (val + '').length <= param;
@@ -60,6 +61,13 @@ var rules = {
     zh_text: /^[\u4e00-\u9fa5]*$/,
     mobile: /^\d{11}$/
 };
+
+function hasValue(value) {
+    if (!value && value !== 0 && value !== false) {
+        return false;
+    }
+    return true;
+}
 
 /**
  * 检验一个数据是否符合规则
@@ -97,13 +105,14 @@ function validateRules(value, _rules, attr) {
     var error;
     if (_rules) {
         if (typeof _rules === 'string') {
-            error = validateOneRules(value, _rules, true, attr);
-            if (error)return error;
-        } else {
-            for (var rule in _rules) {
-                error = validateOneRules(value, rule, _rules[rule], _rules.name || attr);
-                if (error) return error;
-            }
+            _rules = {_rules: true};
+        }
+        if (hasValue(value) && (!_rules.require && !_rules.required)) {
+            return false;
+        }
+        for (var rule in _rules) {
+            error = validateOneRules(value, rule, _rules[rule], _rules.name || attr);
+            if (error) return error;
         }
     }
     return false;

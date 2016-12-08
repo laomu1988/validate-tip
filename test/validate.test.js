@@ -62,17 +62,18 @@ describe('validate', function () {
         };
         schema.tips.enum = '{name}不是预定值';
         var test = schema({
-            'role': {
-                'name': '用户角色',
-                'enum': ['admin', 'customer']
+            role: {
+                name: '用户角色',
+                require: true,
+                enum: ['admin', 'customer']
             }
         });
 
-        var err = test.validateAttr('admin','role');
+        var err = test.validateAttr('admin', 'role');
         expect(err).to.not.be.ok;
-        err = test.validateAttr('','role');
+        err = test.validateAttr('test', 'role');
         expect(err).to.contains('用户角色不是预定值');
-        err = test.validate({role:''});
+        err = test.validate({role: 'test'});
         expect(err[0]).to.contains('用户角色不是预定值');
     })
 });
