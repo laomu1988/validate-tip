@@ -48,8 +48,31 @@ describe('validate', function () {
         expect(err).to.be.equal(false);
     });
 
-    it('validateAttr',function(){
-        var err = user.validateAttr('test','name');
+    it('validateAttr', function () {
+        var err = user.validateAttr('test', 'name');
         expect(err).to.contains('用户名');
     });
+
+    it('validate-self-defined', function () {
+        schema.rules.enum = function (val, param) {
+            if (param && param.length > 0) {
+                return param.indexOf(val) >= 0;
+            }
+            return false;
+        };
+        schema.tips.enum = '{name}不是预定值';
+        var test = schema({
+            'role': {
+                'name': '用户角色',
+                'enum': ['admin', 'customer']
+            }
+        });
+
+        var err = test.validateAttr('admin','role');
+        expect(err).to.not.be.ok;
+        err = test.validateAttr('','role');
+        expect(err).to.contains('用户角色不是预定值');
+        err = test.validate({role:''});
+        expect(err[0]).to.contains('用户角色不是预定值');
+    })
 });

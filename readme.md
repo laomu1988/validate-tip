@@ -30,3 +30,36 @@ if(tips) {
     // tips将提示 ["用户名至少6个字符,当前4个字符","邮箱格式错误"]
 }
 ```
+
+### 自定义验证规则
+```
+schema.rules.enum = function (val, param) {
+    if (param && param.length > 0) {
+        return param.indexOf(val) >= 0;
+    }
+    // 校验通过则返回false
+    return false;
+};
+// 校验不通过时的提示
+schema.tips.enum = '{name}不是预定值';
+
+var test = schema({
+    'role': {
+        'name': '用户角色',
+        'enum': ['admin', 'customer']
+    }
+});
+var err = test.validate({role:''});
+console.log(err);
+// 将输出: ['用户角色不是预定值']
+```
+
+## Todo:
+- 校验规则分级,全局和局部
+- 校验规则和提示说明
+
+## history:
+* 2016.12.08
+    - 自定义校验规则说明
+* 2016.12.06
+    - 初步定义校验规则
