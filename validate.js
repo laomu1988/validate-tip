@@ -107,7 +107,7 @@ function validateRules(value, _rules, attr) {
         if (typeof _rules === 'string') {
             _rules = {_rules: true};
         }
-        if (hasValue(value) && (!_rules.require && !_rules.required)) {
+        if (!hasValue(value) && !_rules.require && !_rules.required) {
             return false;
         }
         for (var rule in _rules) {

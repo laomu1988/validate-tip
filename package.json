@@ -1,6 +1,6 @@
 {
   "name": "validate-tip",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "validate fields and give error tips",
   "main": "validate.js",
   "scripts": {
@@ -19,5 +19,9 @@
   },
   "devDependencies": {
     "chai": "^3.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laomu1988/validate-tip.git"
   }
 }
