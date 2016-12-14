@@ -4,7 +4,9 @@
   "description": "validate fields and give error tips",
   "main": "validate.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "publish-please": "publish-please",
+    "prepublish": "publish-please guard"
   },
   "keywords": [
     "validate",
@@ -18,7 +20,8 @@
     "lodash": "^4.17.2"
   },
   "devDependencies": {
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "publish-please": "^2.2.0"
   },
   "repository": {
     "type": "git",

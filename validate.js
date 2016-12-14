@@ -77,7 +77,7 @@ function hasValue(value) {
  * @param name  不匹配时提示的名称
  * @returns {false|string} 匹配规则时返回false,否则返回错误提示内容
  */
-function validateOneRules(value, rule, param, name) {
+function validateOneRules(value, rule, param, name, attr) {
     if (rules[rule]) {
         var r = rules[rule], test = false;
         if (typeof r === 'function') {
@@ -89,12 +89,12 @@ function validateOneRules(value, rule, param, name) {
             var tip = tips[rule] || tips.def;
             var type = typeof tip;
             if (type === 'string') {
-                var obj = {value: value, param: param, name: name};
+                var obj = {value: value, param: param, name: name, attr: attr};
                 return tip.replace(/\{(\w+)\}/g, function (all, word) {
                     return obj[word];
                 });
             } else if (type === 'function') {
-                return tip(value, param, name);
+                return tip(value, param, name, attr);
             }
         }
     }
@@ -111,7 +111,7 @@ function validateRules(value, _rules, attr) {
             return false;
         }
         for (var rule in _rules) {
-            error = validateOneRules(value, rule, _rules[rule], _rules.name || attr);
+            error = validateOneRules(value, rule, _rules[rule], _rules.name || attr, attr);
             if (error) return error;
         }
     }

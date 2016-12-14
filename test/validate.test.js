@@ -76,4 +76,19 @@ describe('validate', function () {
         err = test.validate({role: 'test'});
         expect(err[0]).to.contains('用户角色不是预定值');
     })
+
+    it('validate-tip-attr', function () {
+        schema.rules.attr = function () {
+            return false;
+        };
+        schema.tips.attr = '{attr}属性提示测试';
+        var test = schema({
+            username: {
+                name: '用户名',
+                attr: 'test'
+            }
+        });
+        var err = test.validate({username: '123'});
+        expect(err[0]).to.be.equal('username属性提示测试');
+    })
 });
