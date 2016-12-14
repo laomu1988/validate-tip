@@ -1,6 +1,6 @@
 {
   "name": "validate-tip",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "validate fields and give error tips",
   "main": "validate.js",
   "scripts": {
