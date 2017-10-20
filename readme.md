@@ -8,7 +8,7 @@ npm install validate-tip
 ## 用法
 ```
 var schema = require('validate-tip');
-var fields = schema({
+var user = schema({
     name: {
         name: '用户名',
         type: 'string',
@@ -24,42 +24,42 @@ var fields = schema({
     }
 });
 
-var tips = fields.validate({name: 'test', email: 'abc'});
+var tips = user.validate({name: 'test', email: 'abc'});
 if(tips) {
     console.log(tips);
     // tips将提示 ["用户名至少6个字符,当前4个字符","邮箱格式错误"]
 }
 ```
 ## api
-* validate(data, allField = true) 校验数据
+* (schema): 创建校验规则实例
+* addRule(ruleName, rule, tip) 自定义验证规则及提示
+    - ruleName {string} 校验规则名称
+    - rule {regexp|function} 要添加的校验规则
+        - 当时正则表达式时，则用其直接校验value， 返回true则表示通过。
+        - 当是函数时， 参数为(要校验的属性值，校验规则参数），返回true表示校验通过。
+    - tip {string|function} 校验不通过时提示
+        - 当时字符串时，将自动替换其中的{value}、{param}或者{name}
+        - 当是函数时， 将被传入参数 值value、校验参数param及字段name, 函数需要返回一个字符串
+* #schema.validate(data, allField = true) 校验数据
     - data 要校验的数据
     - allField: 是否校验所有属性， 当为false时，只校验data上已存在的属性
-* validateAttr(data, attr) 校验某一个属性
-    - data 要校验的数据
-    - attr 要校验的属性
+* #schema.validateAttr(attrData, attr) 校验某一个属性
+    - attrData 要校验的数据
+    - attr 校验数据所在属性
 
 
 ### 自定义验证规则rule及提示
-
-* 校验规则添加到schema.rules上， 可以是函数或者正则表达式。
-    - 当是函数时， 参数为(要校验的属性值，校验规则参数），返回true表示校验通过。
-    - 当时正则表达式时，则用其直接校验value， 返回true则表示通过。
-* 校验规则提示可以是函数或者字符串
-    - 当是函数时， 将被传入参数 值value、校验参数param及字段name, 函数需要返回一个字符串
-    - 当时字符串时，将自动替换其中的{value}、{param}或者{name}
 ```
-schema.rules.enum = function (val, param) {
+schema.addRule('enum', function(val, param) {
     if (param && param.length > 0) {
         return param.indexOf(val) >= 0; // 校验通过返回true
     }
     // 校验未通过则返回false
     return false;
-};
-// 校验不通过时的提示
-// schema.tips.enum = '{name}不是预定值';
-schema.tips.enum = function(value, param, name) {
+}, function(value, param, name) {
     return name + '不是预定值';
-};
+})
+// tip部分也可以为: '{name}不是预定值'
 
 var test = schema({
     role: {
@@ -76,7 +76,7 @@ console.log(err);
 ## Todo:
 - [x] 某一个规则自定义校验规则
 - [x] 某一个规则自定义校验提示
-- [ ] 有一个出错时就抛出异常
+- [ ] 数据多个属性有一个出错时就抛出异常，不必校验所有属性
 - [ ] 增加异步校验，返回Promise/通过cb
 - [ ] 某一个属性单独校验规则
 - [ ] 某一个属性单独校验提示

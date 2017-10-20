@@ -31,6 +31,8 @@ describe('validate', function () {
 
     it('validate-email', function () {
         var obj = {name: 'test', email: 'abc'};
+        var t1 = user.validateAttr(obj.name, 'name');
+        expect(t1).to.contains('最少6个字符');
         var err = user.validate(obj);
         expect(err[0]).to.contains('最少6个字符');
         expect(err[1]).to.be.equal('邮箱格式错误');
@@ -90,5 +92,20 @@ describe('validate', function () {
         });
         var err = test.validate({username: '123'});
         expect(err[0]).to.be.equal('username属性提示测试');
-    })
+    });
+
+    it('validate-addRule', function () {
+        schema.rules.attr = function () {
+            return false;
+        };
+        schema.tips.attr = '{attr}属性提示测试';
+        var test = schema({
+            username: {
+                name: '用户名',
+                attr: 'test'
+            }
+        });
+        var err = test.validate({username: '123'});
+        expect(err[0]).to.be.equal('username属性提示测试');
+    });
 });

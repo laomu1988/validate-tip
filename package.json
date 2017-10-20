@@ -3,6 +3,7 @@
   "version": "1.0.5",
   "description": "validate fields and give error tips",
   "main": "validate.js",
+  "engines": { "node" : ">=6.0.0" },
   "scripts": {
     "test": "mocha",
     "publish-please": "publish-please",
